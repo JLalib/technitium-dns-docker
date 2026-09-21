@@ -5,16 +5,21 @@ services:
     container_name: technitium-dns
     restart: unless-stopped
     ports:
+      # DNS UDP/TCP
       - "53:53/udp"
       - "53:53/tcp"
+      # Web console HTTP
       - "80:80"
+      # DoT (DNS-over-TLS, optional)
       - "5353:5353/tcp"
+      # DoH/DoQ (DNS-over-HTTPS/QUIC)
       - "443:443/tcp"
     volumes:
       - dns-server-data:/etc/dns
       - dns-server-config:/config
     environment:
       - TZ=Europe/Madrid
+      # Admin password (primera ejecución) - CAMBIAR OBLIGATORIAMENTE
       - DNS_SERVER_ADMIN_PASSWORD=cambiar_despues_fuerte
     healthcheck:
       test: ["CMD", "dig", "@localhost", "technitium.com"]
